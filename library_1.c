@@ -1,24 +1,18 @@
 #include <stdio.h>
 #include <string.h>
-
-// Max number of books the library can hold
 #define MAX 100
 
-// A book has an ID, title, author, and whether it's available
+
 struct Book {
     int id;
     char title[100];
     char author[80];
-    int available; // 1 = available, 0 = borrowed
+    int available; 
 };
 
-// Our library is just an array of books
-struct Book books[MAX];
-int count = 0; // how many books are currently stored
 
-// -----------------------------------------------
-// Show all books
-// -----------------------------------------------
+struct Book books[MAX];
+int count = 0;-
 void listBooks() {
     if (count == 0) {
         printf("No books in the library.\n");
@@ -35,9 +29,7 @@ void listBooks() {
     }
 }
 
-// -----------------------------------------------
-// Add a new book
-// -----------------------------------------------
+
 void addBook() {
     if (count >= MAX) {
         printf("Library is full!\n");
@@ -57,15 +49,11 @@ void addBook() {
     printf("Book added! ID: %d\n", count);
 }
 
-// -----------------------------------------------
-// Borrow a book (mark as unavailable)
-// -----------------------------------------------
 void borrowBook() {
     int id;
     printf("Enter book ID to borrow: ");
     scanf("%d", &id);
 
-    // Find the book with this ID
     for (int i = 0; i < count; i++) {
         if (books[i].id == id) {
             if (books[i].available == 0) {
@@ -80,9 +68,7 @@ void borrowBook() {
     printf("Book with ID %d not found.\n", id);
 }
 
-// -----------------------------------------------
-// Return a book (mark as available again)
-// -----------------------------------------------
+
 void returnBook() {
     int id;
     printf("Enter book ID to return: ");
@@ -102,38 +88,31 @@ void returnBook() {
     printf("Book with ID %d not found.\n", id);
 }
 
-// -----------------------------------------------
-// Save books to a file so data isn't lost
-// -----------------------------------------------
+
 void saveBooks() {
     FILE *fp = fopen("library.dat", "wb");
     if (fp == NULL) {
         printf("Could not save.\n");
         return;
     }
-    fwrite(&count, sizeof(int), 1, fp);                    // save how many books
-    fwrite(books, sizeof(struct Book), count, fp);         // save all books
+    fwrite(&count, sizeof(int), 1, fp);                    
+    fwrite(books, sizeof(struct Book), count, fp);       
     fclose(fp);
     printf("Library saved!\n");
 }
 
-// -----------------------------------------------
-// Load books from file when program starts
-// -----------------------------------------------
-void loadBooks() {
+
     FILE *fp = fopen("library.dat", "rb");
     if (fp == NULL) {
-        return; // no saved file yet, that's okay
+        return;
     }
-    fread(&count, sizeof(int), 1, fp);                     // load how many books
-    fread(books, sizeof(struct Book), count, fp);          // load all books
+    fread(&count, sizeof(int), 1, fp);                   
+    fread(books, sizeof(struct Book), count, fp);        
     fclose(fp);
     printf("Loaded %d book(s) from save file.\n", count);
 }
 
-// -----------------------------------------------
-// Main: show menu and handle user input
-// -----------------------------------------------
+
 int main() {
     loadBooks();
 
